@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harsha · Forensic AI Leader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #09090f;
+      --bg-card:     #0f1018;
+      --bg-subtle:   #141520;
+      --gold:        #c9a84c;
+      --gold-dim:    #8a6f2e;
+      --gold-glow:   rgba(201,168,76,0.12);
+      --text:        #e8e6df;
+      --text-muted:  #7a7870;
+      --text-dim:    #4a4844;
+      --border:      rgba(201,168,76,0.15);
+      --border-sub:  rgba(255,255,255,0.05);
+      --red-flag:    #c0392b;
+      --font-head:   'Cormorant Garamond', Georgia, serif;
+      --font-body:   'DM Sans', sans-serif;
+      --font-mono:   'DM Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem;
+      border-bottom: 1px solid var(--border-sub);
+      background: rgba(9,9,15,0.85);
+      backdrop-filter: blur(16px);
+    }
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 8rem 3rem 6rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    /* grid lines background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -3rem; right: -3rem; bottom: 0;
+      background-image:
+        linear-gradient(var(--border-sub) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-sub) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+    .hero-name {
+      font-family: var(--font-head);
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.25rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-tagline {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.6s;
+    }
+    .hero-pills {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.75s;
+    }
+    .pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border: 1px solid var(--border);
+      color: var(--gold);
+      background: var(--gold-glow);
+    }
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.9s;
+    }
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.8rem 2rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--bg);
+      border: 1px solid var(--gold);
+    }
+    .btn-primary:hover { background: #e0bc5a; border-color: #e0bc5a; }
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--gold); background: var(--gold-glow); }
+
+    /* decorative stat strip */
+    .hero-stats {
+      position: absolute; right: 0; top: 50%;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 2rem;
+      text-align: right;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 1.1s;
+    }
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ── SECTION COMMON ── */
+    section { position: relative; z-index: 1; }
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 3rem;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-sub {
+      color: var(--text-muted);
+      max-width: 560px;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { border-top: 1px solid var(--border-sub); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .about-text p { color: var(--text-muted); margin-bottom: 1.25rem; font-size: 0.97rem; }
+    .about-text strong { color: var(--text); font-weight: 500; }
+    .about-facts {
+      display: flex; flex-direction: column; gap: 1.25rem;
+    }
+    .fact {
+      border-left: 2px solid var(--border);
+      padding: 0.75rem 1.25rem;
+      background: var(--bg-card);
+      transition: border-color 0.2s;
+    }
+    .fact:hover { border-color: var(--gold); }
+    .fact-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 0.25rem;
+    }
+    .fact-value { font-size: 0.95rem; color: var(--text); }
+
+    /* ── SKILLS ── */
+    #skills { border-top: 1px solid var(--border-sub); background: var(--bg-subtle); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-sub);
+      padding: 1.75rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .skill-card:hover { border-color: var(--gold); background: var(--bg); }
+    .skill-icon {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .skill-card h3 {
+      font-family: var(--font-head);
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+    }
+    .skill-tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      margin-top: 0.75rem;
+    }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      padding: 0.2rem 0.6rem;
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      border: 1px solid var(--border-sub);
+    }
+    .skill-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── PROJECTS ── */
+    #projects { border-top: 1px solid var(--border-sub); }
+    .projects-list { display: flex; flex-direction: column; gap: 1.5px; }
+    .project {
+      background: var(--bg-card);
+      border: 1px solid var(--border-sub);
+      padding: 2rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: start;
+      transition: border-color 0.2s;
+      cursor: default;
+    }
+    .project:hover { border-color: var(--gold); }
+    .project-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+    .project h3 {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+    .project p { font-size: 0.9rem; color: var(--text-muted); max-width: 600px; line-height: 1.7; }
+    .project-stack {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      margin-top: 1rem;
+    }
+    .project-link {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.5rem 1.1rem;
+      white-space: nowrap;
+      transition: all 0.2s;
+      align-self: start;
+    }
+    .project-link:hover { background: var(--gold-glow); border-color: var(--gold); }
+
+    /* ── EXPERIENCE ── */
+    #experience { border-top: 1px solid var(--border-sub); background: var(--bg-subtle); }
+    .timeline { position: relative; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .timeline-item {
+      padding-left: 2.5rem;
+      padding-bottom: 3rem;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -4px; top: 6px;
+      width: 9px; height: 9px;
+      background: var(--gold);
+      transform: rotate(45deg);
+    }
+    .timeline-date {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 0.4rem;
+    }
+    .timeline-role {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 0.2rem;
+    }
+    .timeline-company { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .timeline-desc { font-size: 0.88rem; color: var(--text-muted); max-width: 640px; line-height: 1.7; }
+
+    /* ── CERTS ── */
+    #certs { border-top: 1px solid var(--border-sub); }
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .cert {
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+      background: var(--bg-card);
+      transition: border-color 0.2s;
+    }
+    .cert:hover { border-color: var(--gold); }
+    .cert-badge {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .cert-name { font-size: 0.85rem; color: var(--text); font-weight: 500; }
+    .cert-body { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim); margin-top: 0.25rem; letter-spacing: 0.08em; }
+
+    /* ── CONTACT ── */
+    #contact { border-top: 1px solid var(--border-sub); }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-sub);
+      background: var(--bg-card);
+      transition: all 0.2s;
+      letter-spacing: 0.05em;
+    }
+    .contact-link:hover { border-color: var(--gold); color: var(--gold); }
+    .contact-note {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-top: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border-sub);
+      padding: 2rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .section-inner { padding: 4rem 1.5rem; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+      .hero-stats { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .project { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#top">H·</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div id="top" class="hero">
+    <div class="hero-eyebrow">// machine learning · AI engineering · data strategy</div>
+    <h1 class="hero-name">AI & Data Leader<br>Driving <em>Real Outcomes</em></h1>
+    <p class="hero-tagline">
+      Building ML pipelines, AI solutions, and data programmes that create measurable impact across retail, healthcare, government, finance, and beyond.
+    </p>
+    <div class="hero-pills">
+      <span class="pill">Azure AI</span>
+      <span class="pill">Machine Learning</span>
+      <span class="pill">GenAI</span>
+      <span class="pill">CFE</span>
+      <span class="pill">Big 4 · 12 Years</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">12+</div>
+        <div class="stat-label">Years in<br>Data & Analytics</div>
+      </div>
+      <div>
+        <div class="stat-num">CFE</div>
+        <div class="stat-label">Certified<br>Fraud Examiner</div>
+      </div>
+      <div>
+        <div class="stat-num">£bn</div>
+        <div class="stat-label">Transaction data<br>analysed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="section-label">01 — Profile</div>
+      <h2 class="section-title">Where Investigative Rigour<br>Meets <em>Modern AI</em></h2>
+      <div class="about-grid reveal">
+        <div class="about-text">
+          <p>
+            I'm a Senior Manager at <strong>Deloitte</strong> with over 12 years building data and AI solutions across some of the most complex, high-stakes environments in consulting.
+          </p>
+          <p>
+            My work spans the full lifecycle: solution architecture on Azure, ML model development, GenAI and synthetic data generation, leading delivery teams, and stakeholder conversations. I'm as comfortable designing a project pipeline as I am presenting findings to a C-suite audience.
+          </p>
+          <p>
+            I hold a <strong>Certified Fraud Examiner (CFE)</strong> qualification, and bring a forensic standard of rigour to everything I build — whether that's a fraud detection system, a location optimisation model, or an internal analytics audit for a major bank.
+          </p>
+        </div>
+        <div class="about-facts">
+          <div class="fact">
+            <div class="fact-label">Current Role</div>
+            <div class="fact-value">Senior Manager · Deloitte</div>
+          </div>
+          <div class="fact">
+            <div class="fact-label">Location</div>
+            <div class="fact-value">London, United Kingdom</div>
+          </div>
+          <div class="fact">
+            <div class="fact-label">Specialisation</div>
+            <div class="fact-value">AI  · ML · Data Strategy</div>
+          </div>
+          <div class="fact">
+            <div class="fact-label">Sector Experience</div>
+            <div class="fact-value">Retail · Healthcare · Government · Finance · Telecoms</div>
+          </div>
+          <div class="fact">
+            <div class="fact-label">Cloud Platform</div>
+            <div class="fact-value">Microsoft Azure (ADF · ADLS Gen2 · AML · AI Foundry)</div>
+          </div>
+          <div class="fact">
+            <div class="fact-label">Core Languages</div>
+            <div class="fact-value">Python · SQL · SAS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-inner">
+      <div class="section-label">02 — Capabilities</div>
+      <h2 class="section-title">What I <em>Build</em></h2>
+      <p class="section-sub">End-to-end capability across analytics, data science, and AI.</p>
+      <div class="skills-grid">
+
+        <div class="skill-card reveal">
+          <div class="skill-icon">☁️</div>
+          <h3>Azure AI Architecture</h3>
+          <p>End-to-end solution design for enterprise AI programmes — medallion lakehouses, ML model serving, Document Intelligence, and AI Foundry integration at scale.</p>
+          <div class="skill-tags">
+            <span class="tag">Azure Data Factory</span>
+            <span class="tag">ADLS Gen2</span>
+            <span class="tag">Azure ML</span>
+            <span class="tag">AI Foundry</span>
+            <span class="tag">Document Intelligence</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-icon">📊</div>
+          <h3>Machine Learning</h3>
+          <p>Regression, classification, anomaly detection, and generative models — built for production. Experienced across fraud detection, location optimisation, pricing, and risk scoring.</p>
+          <div class="skill-tags">
+            <span class="tag">scikit-learn</span>
+            <span class="tag">XGBoost</span>
+            <span class="tag">GANs</span>
+            <span class="tag">Regression</span>
+            <span class="tag">SHAP</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-icon">🤖</div>
+          <h3>GenAI & LLM Engineering</h3>
+          <p>Prompt engineering, RAG pipelines, recommendation engines, and agentic patterns (ReAct) — making LLMs genuinely useful in structured analytical workflows.</p>
+          <div class="skill-tags">
+            <span class="tag">LangChain</span>
+            <span class="tag">OpenAI</span>
+            <span class="tag">Claude</span>
+            <span class="tag">RAG</span>
+            <span class="tag">ReAct Agents</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-icon">🔍</div>
+          <h3>Forensic & Risk Analytics</h3>
+          <p>Fraud detection, litigation data analysis, internal audit, and investigative workflows. CFE-qualified with deep experience across ERP systems and large-scale transactional datasets.</p>
+          <div class="skill-tags">
+            <span class="tag">Fraud Detection</span>
+            <span class="tag">Benford's Law</span>
+            <span class="tag">Litigation Support</span>
+            <span class="tag">Internal Audit</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-icon">📋</div>
+          <h3>Delivery & Leadership</h3>
+          <p>Managing cross-functional analytics teams, client engagement, and programme delivery. Translating complex technical outputs into executive and legal-facing narratives that land.</p>
+          <div class="skill-tags">
+            <span class="tag">Team Leadership</span>
+            <span class="tag">Client Engagement</span>
+            <span class="tag">Solution Architecture</span>
+            <span class="tag">Business Development</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-inner">
+      <div class="section-label">03 — Work</div>
+      <h2 class="section-title">Featured <em>Projects</em></h2>
+      <p class="section-sub">Spanning retail, healthcare, government, telecoms, insurance, and financial services.</p>
+      <div class="projects-list">
+
+        <div class="project reveal">
+          <div>
+            <div class="project-num">01 ·</div>
+            <h3>Azure AI Pipeline · Retail Procure-to-Pay</h3>
+            <p>Designed and delivered an end-to-end Azure AI workflow and data pipeline for a leading UK retail client, transforming their procure-to-pay process. Built on a Bronze/Silver/Gold medallion lakehouse architecture using Azure Data Factory and ADLS Gen2 for ingestion, Azure ML for anomaly detection across invoice and PO data, and Document Intelligence for automated invoice processing — reducing manual review overhead significantly across the P2P cycle.</p>
+            <div class="project-stack">
+              <span class="tag">Azure Data Factory</span>
+              <span class="tag">ADLS Gen2</span>
+              <span class="tag">Azure ML</span>
+              <span class="tag">Document Intelligence</span>
+              <span class="tag">AI Foundry</span>
+              <span class="tag">Python</span>
+              <span class="tag">Retail</span>
+            </div>
+          </div>
+          <a href="https://github.com/YOUR_GITHUB_USERNAME" class="project-link">View Repo →</a>
+        </div>
+
+        <div class="project reveal">
+          <div>
+            <div class="project-num">06 ·</div>
+            <h3>Data & Analytics Internal Audit · Investment Bank</h3>
+            <p>Conducted a comprehensive internal audit of data and analytics capabilities for a major investment bank — assessing data governance, model risk management, pipeline integrity, and analytics tooling against regulatory expectations and internal policy. Delivered a prioritised findings report with remediation roadmap, covering data lineage gaps, model documentation standards, and control weaknesses across the analytics function.</p>
+            <div class="project-stack">
+              <span class="tag">Internal Audit</span>
+              <span class="tag">Data Governance</span>
+              <span class="tag">Model Risk</span>
+              <span class="tag">Regulatory Compliance</span>
+              <span class="tag">Investment Banking</span>
+              <span class="tag">Financial Services</span>
+            </div>
+          </div>
+          <a href="https://github.com/YOUR_GITHUB_USERNAME" class="project-link">View Repo →</a>
+        </div>
+
+
+        <div class="project reveal">
+          <div>
+            <div class="project-num">02 ·</div>
+            <h3>Vaccine Bootcamp Location Model · Public Healthcare</h3>
+            <p>Built a regression-based location optimisation model for a public healthcare body to identify the highest-impact local authorities and areas for vaccine bootcamp deployment. Incorporated socioeconomic deprivation indices, population demographics, existing healthcare access metrics, and historical uptake data to rank localities by projected impact — enabling evidence-based resource allocation decisions at a national scale.</p>
+            <div class="project-stack">
+              <span class="tag">Python</span>
+              <span class="tag">Regression</span>
+              <span class="tag">Geospatial Analysis</span>
+              <span class="tag">scikit-learn</span>
+              <span class="tag">Public Health Data</span>
+              <span class="tag">Healthcare</span>
+            </div>
+          </div>
+          <a href="https://github.com/YOUR_GITHUB_USERNAME" class="project-link">View Repo →</a>
+        </div>
+
+        <div class="project reveal">
+          <div>
+            <div class="project-num">03 ·</div>
+            <h3>Litigation Data Programme · Telecom Class Action</h3>
+            <p>Led the data analytics workstream for a major class action litigation matter involving a global telecommunications company. Managed a team of 7–8 analysts across data extraction, processing, and evidence analysis — translating millions of transactional records into structured findings for legal counsel. Responsible for quality assurance, stakeholder reporting, and ensuring outputs met forensic-grade evidentiary standards throughout the case lifecycle.</p>
+            <div class="project-stack">
+              <span class="tag">Litigation Support</span>
+              <span class="tag">Team Leadership</span>
+              <span class="tag">SQL</span>
+              <span class="tag">Python</span>
+              <span class="tag">Data Analysis</span>
+              <span class="tag">Telecoms</span>
+              <span class="tag">Legal</span>
+            </div>
+          </div>
+          <a href="https://github.com/YOUR_GITHUB_USERNAME" class="project-link">View Repo →</a>
+        </div>
+
+        <div class="project reveal">
+          <div>
+            <div class="project-num">04 ·</div>
+            <h3>Fraud Detection & Recommendation Engine · Gov E-Commerce</h3>
+            <p>Led the development of a dual-capability AI solution for a government e-commerce marketplace: a real-time fraud detection system identifying anomalous seller and transaction behaviour, combined with a recommendation engine delivering personalised pricing history insights to buyers. The fraud layer used ensemble ML models; the recommendation engine applied collaborative filtering and pricing trend analysis — both deployed into a shared production pipeline.</p>
+            <div class="project-stack">
+              <span class="tag">Fraud Detection</span>
+              <span class="tag">Recommendation Engine</span>
+              <span class="tag">Collaborative Filtering</span>
+              <span class="tag">XGBoost</span>
+              <span class="tag">Python</span>
+              <span class="tag">Government</span>
+              <span class="tag">E-Commerce</span>
+            </div>
+          </div>
+          <a href="https://github.com/YOUR_GITHUB_USERNAME" class="project-link">View Repo →</a>
+        </div>
+
+        <div class="project reveal">
+          <div>
+            <div class="project-num">05 ·</div>
+            <h3>GAN Synthetic Data Generation · Insurance</h3>
+            <p>Engineered a Generative Adversarial Network (GAN) pipeline to synthesise realistic, privacy-preserving insurance product data — enabling downstream ML model training and testing without exposing sensitive policyholder records. The solution faithfully preserved statistical distributions, correlations, and edge cases from the source data, passing validation against held-out real data across key actuarial metrics.</p>
+            <div class="project-stack">
+              <span class="tag">GANs</span>
+              <span class="tag">CTGAN</span>
+              <span class="tag">SDV</span>
+              <span class="tag">Python</span>
+              <span class="tag">Data Privacy</span>
+              <span class="tag">Insurance</span>
+              <span class="tag">Synthetic Data</span>
+            </div>
+          </div>
+          <a href="https://github.com/YOUR_GITHUB_USERNAME" class="project-link">View Repo →</a>
+        </div>
+
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-inner">
+      <div class="section-label">04 — Background</div>
+      <h2 class="section-title">12 Years of <em>Experience</em></h2>
+      <p class="section-sub">A career built at the intersection of consulting services and data science.</p>
+      <div class="timeline reveal">
+
+        <div class="timeline-item">
+          <div class="timeline-date">2022 — Present</div>
+          <div class="timeline-role">Senior Manager · Forensic Data Analytics</div>
+          <div class="timeline-company">Deloitte, London</div>
+          <div class="timeline-desc">
+            Leading end-to-end delivery of  analytics engagements for FTSE-listed clients across retail, manufacturing, and financial services. Technical ownership of Azure AI, ML pipeline delivery, and GenAI integration. Active role in business development — proposals, client engagement, and market positioning.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">2020 — 2022</div>
+          <div class="timeline-role">Senior Manager · Data Science</div>
+          <div class="timeline-company">Intellect Design Arena</div>
+          <div class="timeline-desc">
+            Built and managed  data analytics capability, leading teams on data-driven projects. Developed expertise in statistical sampling, recommendation systems, GANs, and insurance services.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">2019 — 2020</div>
+          <div class="timeline-role">Assistant Manager · Forensics</div>
+          <div class="timeline-company">KPMG</div>
+          <div class="timeline-desc">
+            Focus on building technical foundations across SQL, Python, and forensic data analysis. Supported large-scale investigations with data extraction, cleansing, and pattern analysis across complex transactional datasets.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTS -->
+  <section id="certs">
+    <div class="section-inner">
+      <div class="section-label">05 — Credentials</div>
+      <h2 class="section-title">Certifications &amp; <em>Qualifications</em></h2>
+      <p class="section-sub" style="margin-bottom:2rem">Technical depth grounded in professional standards.</p>
+      <div class="certs-grid reveal">
+        <div class="cert">
+          <div class="cert-badge">CFE</div>
+          <div class="cert-name">Certified Fraud Examiner</div>
+          <div class="cert-body">ACFE</div>
+        </div>
+        <div class="cert">
+          <div class="cert-badge">Az</div>
+          <div class="cert-name">Azure Certification</div>
+          <div class="cert-body">Microsoft — add yours</div>
+        </div>
+        <div class="cert">
+          <div class="cert-badge">ML</div>
+          <div class="cert-name">Machine Learning Certification</div>
+          <div class="cert-body">Add yours</div>
+        </div>
+        <div class="cert">
+          <div class="cert-badge">🎓</div>
+          <div class="cert-name">MSc FE </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="section-label">06 — Connect</div>
+      <div class="contact-inner">
+        <div>
+          <h2 class="section-title">Open to <em>Conversations</em></h2>
+          <p class="contact-note">
+            Whether it's  AI solution, a speaking opportunity, an advisory role, or an interesting problem in data analytics — I'm open to hearing about it.
+          </p>
+          <p class="contact-note">
+            Currently based in <strong>London, UK</strong>. Primarily considering London-based opportunities.
+          </p>
+        </div>
+        <div>
+          <div class="contact-links reveal">
+            <a class="contact-link" href="mailto:your.email@domain.com">
+              <span>✉</span> harshachaube@gmail.com
+            </a>
+            <a class="contact-link" href="https://linkedin.com/in/harsha-chaubey" target="_blank">
+              <span>in</span> linkedin.com/in/YOUR_LINKEDIN
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 · Harsha · London</span>
+    <span>Forensic Analytics · ML · GenAI</span>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
