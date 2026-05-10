@@ -600,7 +600,7 @@
 
         <div class="skill-card reveal">
           <div class="skill-icon">☁️</div>
-          <h3>Azure AI Architecture</h3>
+          <h3>Azure AI </h3>
           <p>End-to-end solution design for enterprise AI programmes — medallion lakehouses, ML model serving, Document Intelligence, and AI Foundry integration at scale.</p>
           <div class="skill-tags">
             <span class="tag">Azure Data Factory</span>
@@ -626,7 +626,7 @@
 
         <div class="skill-card reveal">
           <div class="skill-icon">🤖</div>
-          <h3>GenAI & LLM Engineering</h3>
+          <h3>GenAI & LLM </h3>
           <p>Prompt engineering, RAG pipelines, recommendation engines, and agentic patterns (ReAct) — making LLMs genuinely useful in structured analytical workflows.</p>
           <div class="skill-tags">
             <span class="tag">LangChain</span>
@@ -677,7 +677,14 @@
           <div>
             <div class="project-num">01 ·</div>
             <h3>Azure AI Pipeline · Retail Procure-to-Pay</h3>
-            <p>Designed and delivered an end-to-end Azure AI workflow and data pipeline for a leading UK retail client, transforming their procure-to-pay process. Built on a Bronze/Silver/Gold medallion lakehouse architecture using Azure Data Factory and ADLS Gen2 for ingestion, Azure ML for anomaly detection across invoice and PO data, and Document Intelligence for automated invoice processing — reducing manual review overhead significantly across the P2P cycle.</p>
+            <p>Designed and delivered a full Azure AI solution for a leading UK retail client across their procure-to-pay cycle. 
+              Raw invoice and PO documents land in <strong>Azure Blob Storage</strong> containers before flowing through a 
+              pipeline via <strong>Azure Data Factory</strong>. 
+              A <strong>Document Intelligence agent</strong> handles automated extraction from unstructured invoices 
+              — with a <strong>human-in-the-loop</strong> review layer for low-confidence outputs before they're committed downstream. 
+              Structured P2P data is served via <strong>Azure Synapse Analytics</strong> for SQL-based querying and reporting, 
+              while <strong>code agents</strong> within AI Foundry orchestrate anomaly detection and exception 
+              flagging across the pipeline — surfacing high-risk transactions for analyst review without manual triage.</p>
             <div class="project-stack">
               <span class="tag">Azure Data Factory</span>
               <span class="tag">ADLS Gen2</span>
@@ -695,11 +702,10 @@
           <div>
             <div class="project-num">06 ·</div>
             <h3>Data & Analytics Internal Audit · Investment Bank</h3>
-            <p>Conducted a comprehensive internal audit of data and analytics capabilities for a major investment bank — assessing data governance, model risk management, pipeline integrity, and analytics tooling against regulatory expectations and internal policy. Delivered a prioritised findings report with remediation roadmap, covering data lineage gaps, model documentation standards, and control weaknesses across the analytics function.</p>
+            <p>Conducted a comprehensive internal audit of data and analytics capabilities for a major investment bank — assessing data workflow, pipeline integrity, and analytics tooling against regulatory expectations and internal policy. Delivered a prioritised findings report with remediation roadmap, covering data and code gaps, model documentation standards, and control weaknesses across the analytics function.</p>
             <div class="project-stack">
               <span class="tag">Internal Audit</span>
               <span class="tag">Data Governance</span>
-              <span class="tag">Model Risk</span>
               <span class="tag">Regulatory Compliance</span>
               <span class="tag">Investment Banking</span>
               <span class="tag">Financial Services</span>
@@ -713,12 +719,11 @@
           <div>
             <div class="project-num">02 ·</div>
             <h3>Vaccine Bootcamp Location Model · Public Healthcare</h3>
-            <p>Built a regression-based location optimisation model for a public healthcare body to identify the highest-impact local authorities and areas for vaccine bootcamp deployment. Incorporated socioeconomic deprivation indices, population demographics, existing healthcare access metrics, and historical uptake data to rank localities by projected impact — enabling evidence-based resource allocation decisions at a national scale.</p>
+            <p>Built a regression-based location optimisation model for a public healthcare body to identify the highest-impact local authorities and areas for vaccine bootcamp deployment. Incorporated socioeconomic deprivation indices, population demographics, existing healthcare access metrics, upcoming events, and historical uptake data to rank localities by projected impact — enabling evidence-based resource allocation decisions at a national scale. This was integrated with PowerBI dashboard, and was later considered as a template for future public enquiries.</p>
             <div class="project-stack">
               <span class="tag">Python</span>
               <span class="tag">Regression</span>
               <span class="tag">Geospatial Analysis</span>
-              <span class="tag">scikit-learn</span>
               <span class="tag">Public Health Data</span>
               <span class="tag">Healthcare</span>
             </div>
@@ -730,7 +735,7 @@
           <div>
             <div class="project-num">03 ·</div>
             <h3>Litigation Data Programme · Telecom Class Action</h3>
-            <p>Led the data analytics workstream for a major class action litigation matter involving a global telecommunications company. Managed a team of 7–8 analysts across data extraction, processing, and evidence analysis — translating millions of transactional records into structured findings for legal counsel. Responsible for quality assurance, stakeholder reporting, and ensuring outputs met forensic-grade evidentiary standards throughout the case lifecycle.</p>
+            <p>Led the data analytics workstream for a major class action litigation matter involving a telecommunications company. Managed a team of 7–8 analysts across data extraction, processing, and evidence analysis — translating millions of transactional records into structured findings for legal counsel. Responsible for quality assurance, stakeholder reporting, and ensuring outputs met evidentiary standards throughout the case lifecycle.</p>
             <div class="project-stack">
               <span class="tag">Litigation Support</span>
               <span class="tag">Team Leadership</span>
@@ -748,7 +753,7 @@
           <div>
             <div class="project-num">04 ·</div>
             <h3>Fraud Detection & Recommendation Engine · Gov E-Commerce</h3>
-            <p>Led the development of a dual-capability AI solution for a government e-commerce marketplace: a real-time fraud detection system identifying anomalous seller and transaction behaviour, combined with a recommendation engine delivering personalised pricing history insights to buyers. The fraud layer used ensemble ML models; the recommendation engine applied collaborative filtering and pricing trend analysis — both deployed into a shared production pipeline.</p>
+            <p>Led the development of an analytics solution for a government e-commerce marketplace: a real-time fraud detection system identifying anomalous seller and transaction behaviour, combined with a recommendation engine delivering pricing history insights to buyers. The fraud layer used statistical techniques; the recommendation engine applied collaborative filtering and pricing trend analysis — both deployed into a shared production pipeline.</p>
             <div class="project-stack">
               <span class="tag">Fraud Detection</span>
               <span class="tag">Recommendation Engine</span>
@@ -766,7 +771,7 @@
           <div>
             <div class="project-num">05 ·</div>
             <h3>GAN Synthetic Data Generation · Insurance</h3>
-            <p>Engineered a Generative Adversarial Network (GAN) pipeline to synthesise realistic, privacy-preserving insurance product data — enabling downstream ML model training and testing without exposing sensitive policyholder records. The solution faithfully preserved statistical distributions, correlations, and edge cases from the source data, passing validation against held-out real data across key actuarial metrics.</p>
+            <p>Engineered a Generative Adversarial Network (GAN) pipeline to synthesise realistic, KYC documents to train insurance product model — enabling downstream ML model training and testing without exposing sensitive records.</p>
             <div class="project-stack">
               <span class="tag">GANs</span>
               <span class="tag">CTGAN</span>
@@ -791,7 +796,7 @@
     <div class="section-inner">
       <div class="section-label">04 — Background</div>
       <h2 class="section-title">12 Years of <em>Experience</em></h2>
-      <p class="section-sub">A career built at the intersection of consulting services and data science.</p>
+      <p class="section-sub">Built at the intersection of consulting services and data science.</p>
       <div class="timeline reveal">
 
         <div class="timeline-item">
@@ -821,36 +826,6 @@
           </div>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- CERTS -->
-  <section id="certs">
-    <div class="section-inner">
-      <div class="section-label">05 — Credentials</div>
-      <h2 class="section-title">Certifications &amp; <em>Qualifications</em></h2>
-      <p class="section-sub" style="margin-bottom:2rem">Technical depth grounded in professional standards.</p>
-      <div class="certs-grid reveal">
-        <div class="cert">
-          <div class="cert-badge">CFE</div>
-          <div class="cert-name">Certified Fraud Examiner</div>
-          <div class="cert-body">ACFE</div>
-        </div>
-        <div class="cert">
-          <div class="cert-badge">Az</div>
-          <div class="cert-name">Azure Certification</div>
-          <div class="cert-body">Microsoft — add yours</div>
-        </div>
-        <div class="cert">
-          <div class="cert-badge">ML</div>
-          <div class="cert-name">Machine Learning Certification</div>
-          <div class="cert-body">Add yours</div>
-        </div>
-        <div class="cert">
-          <div class="cert-badge">🎓</div>
-          <div class="cert-name">MSc FE </div>
-        </div>
       </div>
     </div>
   </section>
